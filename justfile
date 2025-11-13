@@ -1,15 +1,15 @@
 set export
 set shell := ["bash", "-uc"]
-                                 
+
 yaml          := justfile_directory() + "/yaml"
 apps          := justfile_directory() + "/apps"
-              
+
 browse        := if os() == "linux" { "xdg-open "} else { "open" }
 copy          := if os() == "linux" { "xsel -ib"} else { "pbcopy" }
 replace       := if os() == "linux" { "sed -i"} else { "sed -i '' -e" }
-              
+
 argocd_port   := "30950"
-                                 
+
 # this list of available targets
 # targets marked with * are main targets
 default:
@@ -87,7 +87,7 @@ sync:
   #!/usr/bin/env bash
   export argo_pw=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
   yes | argocd login localhost:{{argocd_port}} --username admin --password "${argo_pw}"
-  argocd app sync bootstrap --prune --local ./apps 
+  argocd app sync bootstrap --prune --local ./apps
 
 # * delete KIND cluster
 teardown:
